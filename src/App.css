@@ -21,7 +21,6 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -38,11 +37,27 @@
 }
 
 .team-member {
+  margin: 10%;
   padding: 10%;
   border: 1px solid black;
   border-radius: 10px;
+  color: white;
 }
 
-.team-member h1 {
+h4 {
   color: teal;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  color: rgb(210,140,100);
+}
+
+form > * {
+  margin: 10%;
+}
+
+form > * > * {
+  margin: 3%;
 }

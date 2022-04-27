@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import './App.css';
+import Form from './Form.js';
 
 function TeamMember(props) {
 
-  const { member } = props;
+  const { member } = props;  
   
   return (
     <div className="team-member">
@@ -39,16 +40,30 @@ function App() {
     }
   ]);
 
+  const onSubmit = evt => {
+    evt.preventDefault();
+    console.log(evt);
+    const newTeamMember = {
+      name: evt.target[0].value.trim(),
+      email: evt.target[1].value.trim(),
+      yearsExperience: parseInt(evt.target[2].value.trim()),
+      role: evt.target[3].value.trim(),
+    }
+    setTeam([...team,newTeamMember]);
+  }
+
 
   return (
     <div className="App">
       <header className="App-header">
         <ul>
-          {team.map(member => {
+          {team.map((member,idx) => {
             return (
-              <TeamMember member={member} />
+              <TeamMember key={idx} member={member} />
                 )})}
         </ul>
+      <h4>Add a member to the team:</h4>
+      <Form onSubmit={onSubmit} />
       </header>
     </div>
   );
