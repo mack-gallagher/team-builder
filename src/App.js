@@ -1,57 +1,37 @@
 import { useState } from 'react';
 import './App.css';
 import Form from './Form.js';
-
-function TeamMember(props) {
-
-  const { member } = props;  
-  
-  return (
-    <div className="team-member">
-      <h4>{ member.name }</h4>
-      <p>I am a { member.role } with { ' ' }
-         { member.yearsExperience } { ' ' } 
-         { member.yearsExperience===1?'year':'years' } of
-         industry experience.
-      </p>
-      <p>Contact me: { member.email }</p>
-    </div>
-     )
-}
+import TeamMember from './TeamMember.js';
 
 function App() {
+
+  const defaultFormValues = {
+                              name: '',
+                              email: '',
+                              yearsExperience: '',
+                              role: '',
+                            };
 
   const [team, setTeam] = useState([
     { name:  'Leigh Garrett',  
       email: 'leighagarrett@gmail.com',
-      role:  'frontend developer',
       yearsExperience: 10,
+      role:  'frontend developer',
     },
     { name:  'Barry Granger',
       email: 'grangerbarry@gmail.com',
-      role:  'backend developer',
       yearsExperience: 1,
+      role:  'backend developer',
     },
     {
       name:  'Calista Christian',
       email: 'cchristian@gmail.com',
-      role:  'data engineer',
       yearsExperience: 3,
+      role:  'data engineer',
     }
   ]);
 
-  const onSubmit = evt => {
-    evt.preventDefault();
-    console.log(evt);
-    const newTeamMember = {
-      name: evt.target[0].value.trim(),
-      email: evt.target[1].value.trim(),
-      yearsExperience: parseInt(evt.target[2].value.trim()),
-      role: evt.target[3].value.trim(),
-    }
-    setTeam([...team,newTeamMember]);
-  }
-
+  const [memberToEdit,setMemberToEdit] = useState(defaultFormValues);
 
   return (
     <div className="App">
@@ -59,11 +39,21 @@ function App() {
         <ul>
           {team.map((member,idx) => {
             return (
-              <TeamMember key={idx} member={member} />
+              <TeamMember 
+                key={idx} 
+                member={member}
+                team={team}
+                memberToEdit={memberToEdit}
+                setMemberToEdit={setMemberToEdit}
+              />
                 )})}
         </ul>
       <h4>Add a member to the team:</h4>
-      <Form onSubmit={onSubmit} />
+      <Form 
+        memberToEdit={memberToEdit} 
+        team={team}
+        setTeam={setTeam}
+      />
       </header>
     </div>
   );

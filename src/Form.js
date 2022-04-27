@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Form(props) {
 
-  const { onSubmit } = props;
+  const { team, setTeam, memberToEdit } = props;
 
   const initialFormValues = {
                               name: '',
@@ -21,12 +21,41 @@ function Form(props) {
   }
 
   const handleSubmit = evt => {
-    onSubmit(evt);
+    evt.preventDefault();
+    console.log(evt);
+    const newTeamMember = {
+      name: evt.target[0].value.trim(),
+      email: evt.target[1].value.trim(),
+      yearsExperience: parseInt(evt.target[2].value.trim()),
+      role: evt.target[3].value.trim(),
+    }
+    setTeam([...team,newTeamMember]);
+  }
+
+  const handleEdit = evt => {
+    evt.preventDefault();
+    const editedMember = {
+                           name: evt.target[0].value.trim(),
+                           email: evt.target[1].value.trim(),
+                           yearsExperience: parseInt(evt.target[2].value),
+                           role: evt.target[3].value,
+                          };
+    setTeam(team.filter(x => x !== memberToEdit).concat(editedMember));
     setFormValues(initialFormValues);
   }
 
+  useEffect(() => {
+    const newFormValues = Object.create(initialFormValues);
+    newFormValues.name = memberToEdit.name;
+    newFormValues.email = memberToEdit.email;
+    newFormValues.role = memberToEdit.role;
+    newFormValues.yearsExperience = memberToEdit.yearsExperience;
+
+    setFormValues(newFormValues);
+  }, [memberToEdit]);
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={memberToEdit?handleEdit:handleSubmit}>
       <label>
         Name:
         <input type="text" value={formValues.name} name="name" onChange={handleChange} />
@@ -47,7 +76,10 @@ function Form(props) {
           <option value="data engineer">Data Engineer</option>
         </select>
       </label>
-      <button type="submit">Add</button>
+      <button type="submit">
+        { memberToEdit?`Make changes to Team Member ${memberToEdit.name}`:'Add' }
+      </button>
+      <input type="submit" style={{display: 'none'}} />
     </form>
        )
 }
