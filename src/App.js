@@ -50,9 +50,10 @@ function App() {
         </ul>
       <h4>Add a member to the team:</h4>
       <Form 
-        memberToEdit={memberToEdit} 
         team={team}
         setTeam={setTeam}
+        memberToEdit={memberToEdit}
+        setMemberToEdit={setMemberToEdit}
       />
       </header>
     </div>

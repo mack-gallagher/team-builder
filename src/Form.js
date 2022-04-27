@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 function Form(props) {
 
-  const { team, setTeam, memberToEdit } = props;
+  const { team, setTeam, memberToEdit, setMemberToEdit } = props;
 
   const initialFormValues = {
                               name: '',
@@ -14,7 +14,6 @@ function Form(props) {
   const [formValues,setFormValues] = useState(initialFormValues);
 
   const handleChange = evt => {
-    console.log(evt);
     const name = evt.target.name;
     const { value } = evt.target;
     setFormValues({...formValues,[name]: value});
@@ -22,7 +21,6 @@ function Form(props) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    console.log(evt);
     const newTeamMember = {
       name: evt.target[0].value.trim(),
       email: evt.target[1].value.trim(),
@@ -42,6 +40,7 @@ function Form(props) {
                           };
     setTeam(team.filter(x => x !== memberToEdit).concat(editedMember));
     setFormValues(initialFormValues);
+    setMemberToEdit(initialFormValues);
   }
 
   useEffect(() => {
@@ -55,7 +54,7 @@ function Form(props) {
   }, [memberToEdit]);
 
   return (
-    <form onSubmit={memberToEdit?handleEdit:handleSubmit}>
+    <form onSubmit={memberToEdit.name?handleEdit:handleSubmit}>
       <label>
         Name:
         <input type="text" value={formValues.name} name="name" onChange={handleChange} />
@@ -77,7 +76,7 @@ function Form(props) {
         </select>
       </label>
       <button type="submit">
-        { memberToEdit?`Make changes to Team Member ${memberToEdit.name}`:'Add' }
+        { memberToEdit.name?`Make changes to Team Member ${memberToEdit.name}`:'Add' }
       </button>
       <input type="submit" style={{display: 'none'}} />
     </form>
